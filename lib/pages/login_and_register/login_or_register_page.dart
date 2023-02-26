@@ -1,6 +1,7 @@
-import 'package:encs_chat/pages/login_page.dart';
-import 'package:encs_chat/pages/register_page.dart';
 import 'package:flutter/material.dart';
+
+import 'login_page.dart';
+import 'register_page.dart';
 
 class LoginOrRegisterPage extends StatefulWidget {
   const LoginOrRegisterPage({super.key});

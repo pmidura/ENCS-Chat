@@ -1,60 +1,51 @@
-import 'package:encs_chat/components/my_button.dart';
-import 'package:encs_chat/components/my_textfield.dart';
-import 'package:encs_chat/components/square_tile.dart';
-import 'package:encs_chat/validation/reg_exp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
+import '../../components/my_button.dart';
+import '../../components/my_dialog.dart';
+import '../../components/my_textfield.dart';
+import '../../components/square_tile.dart';
+import '../../validation/reg_exp.dart';
+
+class RegisterPage extends StatefulWidget {
   final Function()? onTap;
-  const LoginPage({super.key, required this.onTap});
+  const RegisterPage({super.key, required this.onTap});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  final GlobalKey<FormState> _signInKey = GlobalKey<FormState>();
+class _RegisterPageState extends State<RegisterPage> {
+  final GlobalKey<FormState> _signUpKey = GlobalKey<FormState>();
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
-  // Sign in user with e-mail and password
-  void signInUser() async {
-    // Try sign in
+  // Sign up user with e-mail and password
+  Future signUpUser() async {
+    // Try creating user
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
       );
     }
     on FirebaseAuthException catch (ex) {
       // Show error message
-      showErrorMessage(ex.code);
-
-      // if (ex.code == 'user-not-found') {
-      //   showErrorMessage('Nie znaleziono użytkownika!');
-      // }
-      // else if (ex.code == 'wrong-password'){
-      //   showErrorMessage('Nieprawidłowe hasło!');
-      // }
+      if (ex.code == 'email-already-in-use') {
+        showDialog(
+          context: context,
+          builder: (context) => const MyDialog(text: 'Podany adres e-mail znajduje się już w bazie!'),
+        );
+      }
+      else {
+        showDialog(
+          context: context,
+          builder: (context) => MyDialog(text: ex.code),
+        );
+      }
     }
-  }
-
-  // Error message to user
-  void showErrorMessage(String message) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: Colors.deepPurple,
-        title: Center(
-          child: Text(
-            message,
-            style: const TextStyle(color: Colors.white),
-          ),
-        ),
-      ),
-    );
   }
 
   @override
@@ -66,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
         backgroundColor: Colors.grey[300],
         body: Center(
           child: Form(
-            key: _signInKey,
+            key: _signUpKey,
             child: ListView(
               shrinkWrap: true,
               children: [
@@ -79,11 +70,11 @@ class _LoginPageState extends State<LoginPage> {
                       size: 100,
                     ),
 
-                    const SizedBox(height: 50),
+                    const SizedBox(height: 40),
 
-                    // Welcome text
+                    // Create account text
                     Text(
-                      'Witamy z powrotem, brakowało nam Ciebie!',
+                      'Utwórz nowe konto!',
                       style: TextStyle(
                         color: Colors.grey[700],
                         fontSize: 16,
@@ -98,11 +89,11 @@ class _LoginPageState extends State<LoginPage> {
                       hintText: 'Adres e-mail',
                       obscureText: false,
                       validator: (inputVal) {
-                        if (emailController.text.isEmpty) {
+                        if (inputVal.toString().isEmpty) {
                           return 'Proszę wprowadzić adres e-mail!';
                         }
                         else if (!emailValid.hasMatch(inputVal.toString())) {
-                          return 'Niepoprawny format adresu e-mail!';
+                          return 'Niepoprawy format adresu e-mail!';
                         }
 
                         return null;
@@ -117,12 +108,24 @@ class _LoginPageState extends State<LoginPage> {
                       hintText: 'Hasło',
                       obscureText: true,
                       validator: (inputVal) {
-                        if (passwordController.text.isEmpty) {
+                        if (inputVal.toString().isEmpty) {
                           return 'Proszę wprowadzić hasło!';
                         }
-                        // else if (!passwordValid.hasMatch(inputVal.toString())) {
-                        //   return 'Niepoprawny format hasła!';
-                        // }
+                        else if (inputVal.toString().length < 8) {
+                          return 'Hasło powinno zawierać minimum 8 znaków!';
+                        }
+                        else if (!inputVal.toString().contains(passOneUpperCase)) {
+                          return 'Hasło powinno zawierać dużą literę!';
+                        }
+                        else if (!inputVal.toString().contains(passOneLowerCase)) {
+                          return 'Hasło powinno zawierać małą literę!';
+                        }
+                        else if (!inputVal.toString().contains(passOneDigit)) {
+                          return 'Hasło powinno zawierać cyfrę!';
+                        }
+                        else if (!inputVal.toString().contains(passOneSpecialCharacter)) {
+                          return 'Hasło powinno zawierać znak specjalny!';
+                        }
 
                         return null;
                       },
@@ -130,37 +133,45 @@ class _LoginPageState extends State<LoginPage> {
 
                     const SizedBox(height: 10),
 
-                    // Forgot password
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            'Zapomniałeś hasła?',
-                            style: TextStyle(color: Colors.grey[600]),
-                          ),
-                        ],
-                      ),
+                    // Confirm password textfield
+                    MyTextField(
+                      controller: confirmPasswordController,
+                      hintText: 'Powtórz hasło',
+                      obscureText: true,
+                      validator: (inputVal) {
+                        if (inputVal.toString().isEmpty) {
+                          return 'Proszę potwierdzić hasło!';
+                        }
+
+                        return null;
+                      },
                     ),
 
                     const SizedBox(height: 25),
 
-                    // Sign in button
+                    // Sign up button
                     MyButton(
-                      // onTap: signInUser,
                       onTap: () async {
-                        if (_signInKey.currentState!.validate()) {
-                          print('Validated!');
+                        if (!_signUpKey.currentState!.validate()) {
+                          debugPrint('Registration not validated!');
+                        }
+                        else if (
+                          _signUpKey.currentState!.validate() &&
+                            passwordController.text != confirmPasswordController.text) {
+                          showDialog(
+                            context: context,
+                            builder: (context) => const MyDialog(text: 'Hasła nie są takie same!'),
+                          );
                         }
                         else {
-                          print('Not validated!');
+                          debugPrint('Registration validated!');
+                          await signUpUser();
                         }
                       },
-                      text: 'Zaloguj się',
+                      text: 'Zarejestruj się',
                     ),
 
-                    const SizedBox(height: 50),
+                    const SizedBox(height: 40),
 
                     // Or continue with
                     Padding(
@@ -190,9 +201,9 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
 
-                    const SizedBox(height: 50),
+                    const SizedBox(height: 40),
 
-                    // Google and Apple sign in buttons
+                    // Google and Apple sign up buttons
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: const [
@@ -206,21 +217,21 @@ class _LoginPageState extends State<LoginPage> {
                       ],
                     ),
 
-                    const SizedBox(height: 50),
+                    const SizedBox(height: 40),
 
-                    // Not a member? Register now!
+                    // Already have an account? Log in!
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Nie masz konta?',
+                          'Masz już konto?',
                           style: TextStyle(color: Colors.grey[700]),
                         ),
                         const SizedBox(width: 4),
                         GestureDetector(
                           onTap: widget.onTap,
                           child: const Text(
-                            'Zarejestruj się!',
+                            'Zaloguj się!',
                             style: TextStyle(
                               color: Colors.blue,
                               fontWeight: FontWeight.bold,

@@ -1,16 +1,21 @@
-import 'package:encs_chat/firebase_options.dart';
-import 'package:encs_chat/pages/auth_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'firebase_options.dart';
+import 'pages/login_and_register/auth_page.dart';
+
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   // Transparent Status Bar
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
   ));
 
-  WidgetsFlutterBinding.ensureInitialized();
+  // Only portrait mode
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
