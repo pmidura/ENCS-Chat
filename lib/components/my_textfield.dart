@@ -22,6 +22,8 @@ class MyTextField extends StatelessWidget {
         controller: controller,
         obscureText: obscureText,
         validator: validator,
+        textInputAction: TextInputAction.done,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white),

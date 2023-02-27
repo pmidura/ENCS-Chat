@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "512844785004",
+    "project_id": "encs-chat",
+    "storage_bucket": "encs-chat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:512844785004:android:b91a23572900691d417f49",
+        "android_client_info": {
+          "package_name": "com.example.encs_chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "512844785004-ctcr6e6k1b0ss8poma77a7a7aenmdqsm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHU62uN5U_tve4D7KJBSFbPwkeX1VMvMg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "512844785004-ctcr6e6k1b0ss8poma77a7a7aenmdqsm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "512844785004-siimjm2raprh8h34dgo301ua8ffb2ton.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.encsChat"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../components/my_button.dart';
 import '../../components/my_dialog.dart';
 import '../../components/my_textfield.dart';
 import '../../components/square_tile.dart';
+import '../../provider/google_sign_in.dart';
 import '../../validation/reg_exp.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -142,6 +146,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         if (inputVal.toString().isEmpty) {
                           return 'Proszę potwierdzić hasło!';
                         }
+                        else if (inputVal.toString() != passwordController.text.trim()) {
+                          return 'Hasła nie są takie same!';
+                        }
 
                         return null;
                       },
@@ -154,14 +161,6 @@ class _RegisterPageState extends State<RegisterPage> {
                       onTap: () async {
                         if (!_signUpKey.currentState!.validate()) {
                           debugPrint('Registration not validated!');
-                        }
-                        else if (
-                          _signUpKey.currentState!.validate() &&
-                            passwordController.text != confirmPasswordController.text) {
-                          showDialog(
-                            context: context,
-                            builder: (context) => const MyDialog(text: 'Hasła nie są takie same!'),
-                          );
                         }
                         else {
                           debugPrint('Registration validated!');
@@ -206,14 +205,25 @@ class _RegisterPageState extends State<RegisterPage> {
                     // Google and Apple sign up buttons
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        // Google button
-                        SquareTile(imagePath: 'lib/images/google.png'),
-
-                        SizedBox(width: 25),
-
+                      children: [
+                        (Platform.isIOS) ?
                         // Apple button
-                        SquareTile(imagePath: 'lib/images/apple.png'),
+                        GestureDetector(
+                          child: const SquareTile(imagePath: 'lib/images/apple.png'),
+                          onTap: () {},
+                        ) :
+
+                        // Google button
+                        GestureDetector(
+                          child: const SquareTile(imagePath: 'lib/images/google.png'),
+                          onTap: () {
+                            final provider = Provider.of<GoogleSignInProvider>(
+                              context,
+                              listen: false,
+                            );
+                            provider.googleLogin();
+                          },
+                        ),
                       ],
                     ),
 

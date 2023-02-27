@@ -1,5 +1,9 @@
+import 'dart:io';
+
+import 'package:encs_chat/provider/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../components/my_button.dart';
 import '../../components/my_dialog.dart';
@@ -200,14 +204,25 @@ class _LoginPageState extends State<LoginPage> {
                     // Google and Apple sign in buttons
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        // Google button
-                        SquareTile(imagePath: 'lib/images/google.png'),
-
-                        SizedBox(width: 25),
-
+                      children: [
+                        (Platform.isIOS) ?
                         // Apple button
-                        SquareTile(imagePath: 'lib/images/apple.png'),
+                        GestureDetector(
+                          child: const SquareTile(imagePath: 'lib/images/apple.png'),
+                          onTap: () {},
+                        ) :
+
+                        // Google button
+                        GestureDetector(
+                          child: const SquareTile(imagePath: 'lib/images/google.png'),
+                          onTap: () {
+                            final provider = Provider.of<GoogleSignInProvider>(
+                              context,
+                              listen: false,
+                            );
+                            provider.googleLogin();
+                          },
+                        ),
                       ],
                     ),
 
