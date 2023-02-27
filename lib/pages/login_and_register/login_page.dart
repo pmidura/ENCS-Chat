@@ -6,6 +6,7 @@ import '../../components/my_dialog.dart';
 import '../../components/my_textfield.dart';
 import '../../components/square_tile.dart';
 import '../../validation/reg_exp.dart';
+import 'forgot_password_page.dart';
 
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
@@ -135,9 +136,14 @@ class _LoginPageState extends State<LoginPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text(
-                            'Zapomniałeś hasła?',
-                            style: TextStyle(color: Colors.grey[600]),
+                          GestureDetector(
+                            child: Text(
+                              'Zapomniałeś hasła?',
+                              style: TextStyle(color: Colors.grey[600]),
+                            ),
+                            onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const ForgotPasswordPage(),
+                            )),
                           ),
                         ],
                       ),
