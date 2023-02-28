@@ -78,42 +78,71 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text(
-            'Na Twój adres e-mail został wysłany link do weryfikacji konta.',
-            style: TextStyle(
-              fontSize: 20,
-            ),
-            textAlign: TextAlign.center,
+          // App logo
+          const Icon(
+            Icons.mail_lock,
+            size: 100,
           ),
+
+          const SizedBox(height: 50),
+
+          // Send verification e-mail text
+          Padding(
+            padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+            child: Text(
+              'Na Twój adres e-mail został wysłany link do weryfikacji konta.',
+              style: TextStyle(
+                color: Colors.grey[700],
+                fontSize: 16,
+                height: 1.5,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+
           const SizedBox(height: 25),
-          ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size.fromHeight(50),
+
+          // Send verification link again
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8.0),
             ),
-            icon: const Icon(
-              Icons.email,
-              size: 32,
-            ),
-            label: const Text(
-              'Wyślij link weryfikacyjny ponownie',
-              style: TextStyle(
-                fontSize: 24,
+            child: ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.all(15.0),
               ),
+              icon: const Icon(
+                Icons.email,
+                size: 32,
+              ),
+              label: const Text(
+                'Wyślij link weryfikacyjny ponownie',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                ),
+              ),
+              onPressed: canResendEmail ? sendVerificationEmail : null,
             ),
-            onPressed: canResendEmail ? sendVerificationEmail : null,
           ),
-          const SizedBox(height: 10),
-          TextButton(
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size.fromHeight(50),
-            ),
-            child: const Text(
-              'Powrót do logowania',
-              style: TextStyle(
-                fontSize: 24,
+
+          const SizedBox(height: 25),
+
+          // Back to login page
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              GestureDetector(
+                child: Text(
+                  'Powrót do logowania',
+                  style: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 16,
+                  ),
+                ),
+                onTap: () => FirebaseAuth.instance.signOut(),
               ),
-            ),
-            onPressed: () => FirebaseAuth.instance.signOut(),
+            ],
           ),
         ],
       ),

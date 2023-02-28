@@ -1,4 +1,6 @@
+import 'package:encs_chat/components/my_button.dart';
 import 'package:encs_chat/components/my_dialog.dart';
+import 'package:encs_chat/components/my_textfield.dart';
 import 'package:encs_chat/validation/reg_exp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +13,7 @@ class ForgotPasswordPage extends StatefulWidget {
 }
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
-  final formKey = GlobalKey<FormState>();
+  final _resetPassKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
 
   @override
@@ -20,58 +22,129 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) => Scaffold(
-    body: Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Form(
-        key: formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Receive an email to reset your pass.',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16),
-            ),
-            const SizedBox(height: 20),
-            TextFormField(
-              controller: emailController,
-              cursorColor: Colors.white,
-              textInputAction: TextInputAction.done,
-              decoration: const InputDecoration(labelText: 'Email'),
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: (email) => email != null && !emailValid.hasMatch(email) ? 'Enter a valid email' : null,
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size.fromHeight(50),
-              ),
-              icon: const Icon(Icons.email_outlined),
-              label: const Text(
-                'Reset Password',
-                style: TextStyle(fontSize: 16),
-              ),
-              onPressed: resetPassword,
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
-  
   Future resetPassword() async {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(
         email: emailController.text.trim(),
       );
+
+      if (context.mounted) {
+        Navigator.of(context).pop();
+        showDialog(
+          context: context,
+          builder: (context) => const MyDialog(
+            text: 'Link do resetowania hasła został przesłany na podany adres e-mail.',
+          ),
+        );
+      }
     }
     on FirebaseAuthException catch (ex) {
-      showDialog(
-        context: context,
-        builder: (context) => MyDialog(text: ex.code),
-      );
+      // Show error message
+      if (ex.code == 'user-not-found') {
+        showDialog(
+          context: context,
+          builder: (context) => const MyDialog(
+            text: 'Nie znaleziono użytkownika o podanym adresie e-mail!',
+          ),
+        );
+      }
+      else {
+        showDialog(
+          context: context,
+          builder: (context) => MyDialog(
+            text: ex.code,
+          ),
+        );
+      }
     }
   }
+
+  @override
+  Widget build(BuildContext context) => GestureDetector(
+    onTap: () => FocusManager.instance.primaryFocus?.unfocus(), // Dismiss the keyboard when touched outside
+    child: Scaffold(
+      // resizeToAvoidBottomInset: false, // Avoid error => Bottom overflowed by x pixels when showing keyboard
+      backgroundColor: Colors.grey[300],
+      body: Center(
+        child: Form(
+          key: _resetPassKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // App logo
+              const Icon(
+                Icons.mail_lock,
+                size: 100,
+              ),
+
+              const SizedBox(height: 50),
+
+              // Forgot password? - Text
+              Text(
+                'Zapomniałeś hasła? Zresetuj je już teraz!',
+                style: TextStyle(
+                  color: Colors.grey[700],
+                  fontSize: 16,
+                ),
+              ),
+
+              const SizedBox(height: 25),
+
+              // E-mail textfield
+              MyTextField(
+                controller: emailController,
+                hintText: 'Adres e-mail',
+                obscureText: false,
+                validator: (inputVal) {
+                  if (inputVal.toString().isEmpty) {
+                    return 'Proszę wprowadzić adres e-mail!';
+                  }
+                  else if (!emailValid.hasMatch(inputVal.toString())) {
+                    return 'Niepoprawny format adresu e-mail!';
+                  }
+
+                  return null;
+                },
+              ),
+
+              const SizedBox(height: 25),
+
+              // Reset password button
+              MyButton(
+                onTap: () async {
+                  if (!_resetPassKey.currentState!.validate()) {
+                    debugPrint('Reset password not validated!');
+                  }
+                  else {
+                    debugPrint('Reset password validated!');
+                    await resetPassword();
+                  }
+                },
+                text: 'Resetuj hasło',
+              ),
+
+              const SizedBox(height: 25),
+
+              // Back to login page
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    child: Text(
+                      'Powrót do logowania',
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 16,
+                      ),
+                    ),
+                    onTap: () => Navigator.of(context).pop(),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
 }
