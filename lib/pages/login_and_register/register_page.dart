@@ -8,6 +8,7 @@ import '../../components/my_button.dart';
 import '../../components/my_dialog.dart';
 import '../../components/my_textfield.dart';
 import '../../components/square_tile.dart';
+import '../../firebase/cloud_store_data_management.dart';
 import '../../provider/google_sign_in.dart';
 import '../../validation/reg_exp.dart';
 
@@ -26,6 +27,8 @@ class _RegisterPageState extends State<RegisterPage> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
+  final CloudStoreDataManagement _cloudStoreDataManagement = CloudStoreDataManagement();
+
   // Sign up user with e-mail and password
   Future signUpUser() async {
     // Try creating user
@@ -33,6 +36,11 @@ class _RegisterPageState extends State<RegisterPage> {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
+      );
+
+      await _cloudStoreDataManagement.registerNewUser(
+        userName: emailController.text.trim(),
+        userEmail: emailController.text.trim(),
       );
     }
     on FirebaseAuthException catch (ex) {
