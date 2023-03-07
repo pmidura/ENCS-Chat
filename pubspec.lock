@@ -9,6 +9,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.16"
+  animations:
+    dependency: "direct main"
+    description:
+      name: animations
+      sha256: fe8a6bdca435f718bb1dc8a11661b2c22504c6da40ef934cee8327ed77934164
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.7"
   async:
     dependency: transitive
     description:
@@ -33,6 +41,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.1"
+  circle_list:
+    dependency: "direct main"
+    description:
+      name: circle_list
+      sha256: "671af906cacb5454bc71c6b01469562ccd765c10b31b3d2fd5b7e8f103868469"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.5"
   clock:
     dependency: transitive
     description:
@@ -272,6 +288,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
+  loading_overlay:
+    dependency: "direct main"
+    description:
+      name: loading_overlay
+      sha256: a4dd5a790e0d60568d4c684e46eed00de883db0dc660f90ffd583aca8f4a1d91
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.0"
   matcher:
     dependency: transitive
     description:
@@ -349,6 +373,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.1"
+  sqflite:
+    dependency: "direct main"
+    description:
+      name: sqflite
+      sha256: "851d5040552cf911f4cabda08d003eca76b27da3ed0002978272e27c8fbf8ecc"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.5"
+  sqflite_common:
+    dependency: transitive
+    description:
+      name: sqflite_common
+      sha256: bfd6973aaeeb93475bc0d875ac9aefddf7965ef22ce09790eb963992ffc5183f
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.4.2+2"
   stack_trace:
     dependency: transitive
     description:
@@ -373,6 +413,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  synchronized:
+    dependency: transitive
+    description:
+      name: synchronized
+      sha256: "33b31b6beb98100bf9add464a36a8dd03eb10c7a8cf15aeec535e9b054aaf04b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.1"
   term_glyph:
     dependency: transitive
     description:
@@ -407,4 +455,4 @@ packages:
     version: "2.1.4"
 sdks:
   dart: ">=2.19.2 <3.0.0"
-  flutter: ">=3.0.0"
+  flutter: ">=3.3.0"

@@ -1,13 +1,11 @@
-import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../components/my_button.dart';
-import '../../components/my_dialog.dart';
-import '../../components/my_textfield.dart';
-import '../../components/square_tile.dart';
+import '../../components/login_and_register/my_button.dart';
+import '../../components/login_and_register/my_dialog.dart';
+import '../../components/login_and_register/my_textfield.dart';
+import '../../components/login_and_register/square_tile.dart';
 import '../../firebase/cloud_store_data_management.dart';
 import '../../provider/google_sign_in.dart';
 import '../../validation/reg_exp.dart';
@@ -214,13 +212,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        (Platform.isIOS) ?
-                        // Apple button
-                        GestureDetector(
-                          child: const SquareTile(imagePath: 'lib/images/apple.png'),
-                          onTap: () {},
-                        ) :
-
                         // Google button
                         GestureDetector(
                           child: const SquareTile(imagePath: 'lib/images/google.png'),
@@ -231,6 +222,14 @@ class _RegisterPageState extends State<RegisterPage> {
                             );
                             provider.googleLogin();
                           },
+                        ),
+
+                        const SizedBox(width: 25),
+
+                        // Apple button
+                        GestureDetector(
+                          child: const SquareTile(imagePath: 'lib/images/apple.png'),
+                          onTap: () {},
                         ),
                       ],
                     ),

@@ -1,15 +1,14 @@
-import 'dart:io';
-
 import 'package:encs_chat/provider/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../components/my_button.dart';
-import '../../components/my_dialog.dart';
-import '../../components/my_textfield.dart';
-import '../../components/square_tile.dart';
+import '../../components/login_and_register/my_button.dart';
+import '../../components/login_and_register/my_dialog.dart';
+import '../../components/login_and_register/my_textfield.dart';
+import '../../components/login_and_register/square_tile.dart';
 import '../../validation/reg_exp.dart';
+
 import 'forgot_password_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -205,13 +204,6 @@ class _LoginPageState extends State<LoginPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        (Platform.isIOS) ?
-                        // Apple button
-                        GestureDetector(
-                          child: const SquareTile(imagePath: 'lib/images/apple.png'),
-                          onTap: () {},
-                        ) :
-
                         // Google button
                         GestureDetector(
                           child: const SquareTile(imagePath: 'lib/images/google.png'),
@@ -222,6 +214,14 @@ class _LoginPageState extends State<LoginPage> {
                             );
                             provider.googleLogin();
                           },
+                        ),
+
+                        const SizedBox(width: 25),
+
+                        // Apple button
+                        GestureDetector(
+                          child: const SquareTile(imagePath: 'lib/images/apple.png'),
+                          onTap: () {},
                         ),
                       ],
                     ),

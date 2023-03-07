@@ -1,6 +1,6 @@
-import 'package:encs_chat/components/my_button.dart';
-import 'package:encs_chat/components/my_dialog.dart';
-import 'package:encs_chat/components/my_textfield.dart';
+import 'package:encs_chat/components/login_and_register/my_button.dart';
+import 'package:encs_chat/components/login_and_register/my_dialog.dart';
+import 'package:encs_chat/components/login_and_register/my_textfield.dart';
 import 'package:encs_chat/validation/reg_exp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

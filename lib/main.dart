@@ -31,9 +31,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ChangeNotifierProvider(
     create: (context) => GoogleSignInProvider(),
-    child: const MaterialApp(
+    child: MaterialApp(
       debugShowCheckedModeBanner: false, // Hide debug banner
-      home: AuthPage(),
+      theme: ThemeData(
+        drawerTheme: const DrawerThemeData(
+          scrimColor: Colors.transparent,
+        ),
+      ),
+      home: const AuthPage(),
     ),
   );
 }

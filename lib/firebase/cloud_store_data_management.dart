@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:intl/intl.dart';
 
@@ -35,7 +36,7 @@ class CloudStoreDataManagement {
         'creation_date': currentDate,
         'creation_time': currentTime,
         'phone_number': '',
-        'profile_pic': '',
+        'profile_pic': FirebaseAuth.instance.currentUser!.photoURL ?? 'https://freesvg.org/img/abstract-user-flat-3.png',
         'token': getToken.toString(),
         'total_connections': '',
         'user_name': userName,
