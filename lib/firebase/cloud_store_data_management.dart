@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class CloudStoreDataManagement {
@@ -13,12 +14,12 @@ class CloudStoreDataManagement {
           .where('user_name', isEqualTo: userName)
           .get();
 
-      print('Debug 1: ${findResults.docs.isEmpty}');
+      debugPrint('Debug 1: ${findResults.docs.isEmpty}');
 
       return findResults.docs.isEmpty ? true : false;
     }
     catch (ex) {
-      print('Error in check this user already present or not: ${ex.toString()}');
+      debugPrint('Error in check this user already present or not: ${ex.toString()}');
       return false;
     }
   }
@@ -45,7 +46,7 @@ class CloudStoreDataManagement {
       return true;
     }
     catch (ex) {
-      print('Error in register new user: ${ex.toString()}');
+      debugPrint('Error in register new user: ${ex.toString()}');
       return false;
     }
   }
@@ -59,8 +60,29 @@ class CloudStoreDataManagement {
       return documentSnapshot.exists;
     }
     catch (ex) {
-      print('Error in user record present or not: ${ex.toString()}');
+      debugPrint('Error in user record present or not: ${ex.toString()}');
       return false;
+    }
+  }
+
+  Future<Map<String, dynamic>> getTokenFromCloudStore({required String userMail}) async {
+    try {
+      final DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+        await FirebaseFirestore.instance.doc('$collectionName/$userMail').get();
+
+      debugPrint('DocumentSnapshot is: ${documentSnapshot.data()}');
+
+      final Map<String, dynamic> importantData = <String, dynamic>{};
+
+      importantData['token'] = documentSnapshot.data()!['token'];
+      importantData['date'] = documentSnapshot.data()!['creation_date'];
+      importantData['time'] = documentSnapshot.data()!['creation_time'];
+
+      return importantData;
+    }
+    catch (ex) {
+      debugPrint('Error in get token from cloud store: ${ex.toString()}');
+      return {};
     }
   }
 }

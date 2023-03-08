@@ -1,3 +1,4 @@
+import 'package:encs_chat/sqlite/local_db.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +27,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final confirmPasswordController = TextEditingController();
 
   final CloudStoreDataManagement _cloudStoreDataManagement = CloudStoreDataManagement();
+  final LocalDb localDb = LocalDb();
 
   // Sign up user with e-mail and password
   Future signUpUser() async {
@@ -37,8 +39,26 @@ class _RegisterPageState extends State<RegisterPage> {
       );
 
       await _cloudStoreDataManagement.registerNewUser(
-        userName: emailController.text.trim(),
+        userName: emailController.text.split('@')[0].trim(),
         userEmail: emailController.text.trim(),
+      );
+
+      // Calling local db methods to initialize local db with required methods
+      await localDb.createTableToStoreImportantData();
+      final Map<String, dynamic> importantFetchedData = await _cloudStoreDataManagement.getTokenFromCloudStore(
+        userMail: FirebaseAuth.instance.currentUser!.email.toString(),
+      );
+
+      await localDb.insertOrUpdateDataForThisAccount(
+        userName: FirebaseAuth.instance.currentUser!.email.toString().split('@')[0],
+        userMail: FirebaseAuth.instance.currentUser!.email.toString(),
+        userToken: importantFetchedData['token'],
+        userAccCreationDate: importantFetchedData['date'],
+        userAccCreationTime: importantFetchedData['time'],
+      );
+
+      await localDb.createTableForUserActivity(
+        tableName: FirebaseAuth.instance.currentUser!.email.toString().split('@')[0],
       );
     }
     on FirebaseAuthException catch (ex) {

@@ -72,7 +72,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   }
 
   @override
-  Widget build(BuildContext context) => isEmailVerified ? HomePage() : Scaffold(
+  Widget build(BuildContext context) => isEmailVerified ? const HomePage() : Scaffold(
     backgroundColor: Colors.grey[300],
     body: Center(
       child: Column(

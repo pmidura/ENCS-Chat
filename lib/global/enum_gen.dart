@@ -1,0 +1,4 @@
+enum StatusMediaTypes {
+  textActivity,
+  imageActivity,
+}
