@@ -1,5 +1,7 @@
+import 'package:animations/animations.dart';
 import 'package:encs_chat/pages/menu/account_page.dart';
 import 'package:encs_chat/pages/menu/help/help_page.dart';
+import 'package:encs_chat/pages/search_page.dart';
 import 'package:encs_chat/provider/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -38,18 +40,9 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                    onPressed: () {
-                      _globalKey.currentState!.openDrawer();
-                    },
+                    onPressed: () => _globalKey.currentState!.openDrawer(),
                     icon: const Icon(
                       Icons.menu,
-                      color: Colors.white,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.search,
                       color: Colors.white,
                     ),
                   ),
@@ -143,22 +136,8 @@ class _HomePageState extends State<HomePage> {
         ),
       ],
     ),
-    floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-    floatingActionButton: Padding(
-      padding: const EdgeInsets.only(bottom: 15.0),
-      child: SizedBox(
-        height: 50,
-        width: 50,
-        child: FloatingActionButton(
-          backgroundColor: Colors.blue,
-          child: const Icon(
-            Icons.edit_outlined,
-            size: 25,
-          ),
-          onPressed: () {},
-        ),
-      ),
-    ),
+    floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+    floatingActionButton: externalConnManagement(),
     drawer: Drawer(
       width: 275,
       backgroundColor: Colors.black38,
@@ -220,10 +199,16 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       UserAvatar(photoURL: user.photoURL ?? 'https://freesvg.org/img/abstract-user-flat-3.png'),
                       const SizedBox(width: 12),
-                      Text(
-                        user.displayName ?? user.email!,
-                        style: const TextStyle(
-                          color: Colors.white,
+                      Expanded(
+                        child: Text(
+                          user.displayName ?? user.email!,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                          softWrap: false,
+                          maxLines: 1,
+                          overflow: TextOverflow.fade,
                         ),
                       ),
                     ],
@@ -311,6 +296,22 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
+      ),
+    ),
+  );
+
+  Widget externalConnManagement() => OpenContainer(
+    closedColor: const Color(0xFF171717),
+    middleColor: const Color(0xFF171717),
+    openColor: const Color(0xFF171717),
+    transitionDuration: const Duration(milliseconds: 500),
+    transitionType: ContainerTransitionType.fadeThrough,
+    openBuilder: (_, __) => const SearchPage(),
+    closedBuilder: (_, __) => const Padding(
+      padding: EdgeInsets.only(top: 32.0),
+      child: Icon(
+        Icons.search,
+        color: Colors.white,
       ),
     ),
   );
