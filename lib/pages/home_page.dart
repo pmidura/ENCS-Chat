@@ -1,4 +1,5 @@
 import 'package:animations/animations.dart';
+import 'package:encs_chat/pages/chatting/chat_page.dart';
 import 'package:encs_chat/pages/menu/account_page.dart';
 import 'package:encs_chat/pages/menu/help/help_page.dart';
 import 'package:encs_chat/pages/search_page.dart';
@@ -111,7 +112,7 @@ class _HomePageState extends State<HomePage> {
           right: 0,
           bottom: 0,
           child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 15.0),
+            padding: const EdgeInsets.symmetric(vertical: 20.0),
             decoration: const BoxDecoration(
               color: Color(0xF71F1E1E),
               borderRadius: BorderRadius.only(
@@ -120,7 +121,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             child: ListView(
-              padding: const EdgeInsets.only(left: 25.0),
+              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
               children: [
                 buildConversationRow('Maciek', 'Witam Pana serdecznie', 'google.png'),
                 buildConversationRow('Piotrek', 'Co tam ciekawego?', 'google.png'),
@@ -337,60 +338,68 @@ class _HomePageState extends State<HomePage> {
     ),
   );
 
-  Column buildConversationRow(String name, String message, String filename) => Column(
-    children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              CircleAvatar(
-                radius: 29,
-                backgroundColor: Colors.transparent,
-                backgroundImage: AssetImage('lib/images/$filename'),
-              ),
-              const SizedBox(width: 15),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+  Widget buildConversationRow(String name, String message, String filename) => OpenContainer(
+    closedColor: const Color(0xF71F1E1E),
+    middleColor: const Color(0xF71F1E1E),
+    openColor: const Color(0xF71F1E1E),
+    transitionDuration: const Duration(milliseconds: 500),
+    transitionType: ContainerTransitionType.fadeThrough,
+    openBuilder: (_, __) => ChatPage(userName: name),
+    closedBuilder: (_, __) => Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                CircleAvatar(
+                  radius: 29,
+                  backgroundColor: Colors.transparent,
+                  backgroundImage: AssetImage('lib/images/$filename'),
+                ),
+                const SizedBox(width: 15),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      name,
+                      style: const TextStyle(
+                        color: Colors.grey,
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      message,
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 10.0, top: 5.0),
+              child: Column(
+                children: const [
                   Text(
-                    name,
-                    style: const TextStyle(
+                    '13:21',
+                    style: TextStyle(
+                      fontSize: 10,
                       color: Colors.grey,
                     ),
                   ),
-                  const SizedBox(height: 5),
-                  Text(
-                    message,
-                    style: const TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
+                  SizedBox(height: 15),
                 ],
               ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 25.0, top: 5.0),
-            child: Column(
-              children: const [
-                Text(
-                  '13:21',
-                  style: TextStyle(
-                    fontSize: 10,
-                    color: Colors.grey,
-                  ),
-                ),
-                SizedBox(height: 15),
-              ],
             ),
-          ),
-        ],
-      ),
-      const Divider(
-        indent: 70,
-        height: 20,
-      ),
-    ],
+          ],
+        ),
+        const Divider(
+          indent: 70,
+          height: 20,
+        ),
+      ],
+    ),
   );
 }
