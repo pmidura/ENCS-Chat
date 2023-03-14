@@ -44,8 +44,8 @@ class _HelpPageState extends State<HelpPage> {
             size: 20.0,
             color: Colors.red,
           ),
-          title: 'Report a problem',
-          extraText: 'About app crashing, bugs report',
+          title: 'Zgłoś problem',
+          extraText: 'Zawieszanie się aplikacji, zgłaszanie błędów',
         ),
 
         getListOption(
@@ -54,8 +54,8 @@ class _HelpPageState extends State<HelpPage> {
             size: 20.0,
             color: Colors.green,
           ),
-          title: 'Request a feature',
-          extraText: 'Any new feature in your mind',
+          title: 'Dodanie funkcjonalności',
+          extraText: 'Nowa funkcjonalność aplikacji',
         ),
 
         getListOption(
@@ -64,8 +64,8 @@ class _HelpPageState extends State<HelpPage> {
             size: 20.0,
             color: Colors.amber,
           ),
-          title: 'Send feedback',
-          extraText: 'Your experience of that app',
+          title: 'Wyślij opinię',
+          extraText: 'Twoje doświadczenie z tą aplikacją',
         ),
       ],
     ),
@@ -83,22 +83,22 @@ class _HelpPageState extends State<HelpPage> {
     transitionType: ContainerTransitionType.fadeThrough,
     transitionDuration: const Duration(milliseconds: 500),
     openBuilder: (_, __) {
-      if (title == 'Report a problem') {
+      if (title == 'Zgłoś problem') {
         return const HelpInputTaker(
           subject: 'Problem',
-          appBarTitle: 'Describe your problem',
+          appBarTitle: 'Opisz swój problem',
         );
       }
-      else if (title == 'Request a feature') {
+      else if (title == 'Dodanie funkcjonalności') {
         return const HelpInputTaker(
-          subject: 'Feature',
-          appBarTitle: 'Describe the feature',
+          subject: 'Funkcjonalność',
+          appBarTitle: 'Opisz nową funkcjonalność',
         );
       }
-      else if (title == 'Send feedback') {
+      else if (title == 'Wyślij opinię') {
         return const HelpInputTaker(
-          subject: 'Feedback',
-          appBarTitle: 'Write your feedback',
+          subject: 'Opinia',
+          appBarTitle: 'Napisz swoją opinię',
         );
       }
       return const Center();
@@ -111,7 +111,7 @@ class _HelpPageState extends State<HelpPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 10.0),
+            padding: const EdgeInsets.only(left: 20.0),
             child: icon,
           ),
           Expanded(

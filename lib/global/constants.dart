@@ -1,5 +1,4 @@
 class FirestoreFieldConstants {
-  final String about = 'about';
   final String activity = 'activity';
   final String connectionRequest = 'connection_request';
   final String connections = 'connections';

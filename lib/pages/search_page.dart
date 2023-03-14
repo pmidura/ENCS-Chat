@@ -84,43 +84,54 @@ class _SearchPageState extends State<SearchPage> {
             margin: const EdgeInsets.all(12.0),
             width: double.maxFinite,
             height: double.maxFinite,
-            child: ListView(
-              shrinkWrap: true,
+            child: Column(
               children: [
-                const Center(
-                  child: Text(
-                    'Available Connections',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                    ),
+                // Icon back
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () => Navigator.of(context).pop(),
+                            child: const Icon(
+                              Icons.arrow_back_ios,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
 
-
+                // Search bar
                 Container(
                   width: double.maxFinite,
-                  margin: const EdgeInsets.only(top: 30.0, bottom: 30.0),
+                  margin: const EdgeInsets.fromLTRB(10, 20, 10, 20),
                   child: TextField(
-                    autofocus: true,
+                    autofocus: false,
                     style: const TextStyle(
                       color: Colors.white,
                     ),
-                    decoration: const InputDecoration(
-                      hintText: 'Search User Name',
-                      hintStyle: TextStyle(
+                    decoration: InputDecoration(
+                      hintText: 'Wyszukaj użytkownika',
+                      hintStyle: const TextStyle(
                         color: Colors.white70,
                       ),
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
                           width: 1.0,
-                          color: Colors.lightBlue,
+                          color: Colors.grey[400]!,
                         ),
                       ),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
                           width: 1.0,
-                          color: Colors.lightGreen,
+                          color: Colors.grey[800]!,
                         ),
                       ),
                     ),
@@ -151,11 +162,8 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                 ),
 
-
-                SizedBox(
-                  // margin: const EdgeInsets.only(top: 30.0),
-                  height: MediaQuery.of(context).size.height,
-                  width: double.maxFinite,
+                // List of users
+                Expanded(
                   child: ListView.builder(
                     shrinkWrap: true,
                     itemCount: sortedAvailableUsers.length,
@@ -172,8 +180,6 @@ class _SearchPageState extends State<SearchPage> {
 
   Widget connShowUp(int index) => Padding(
     padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
-    // height: 80,
-    // width: double.maxFinite,
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -217,7 +223,7 @@ class _SearchPageState extends State<SearchPage> {
               });
             }
 
-            if (buttonName == ConnectionStateName.connect.toString()) {
+            if (buttonName == ConnectionStateName.connect.value) {
               if (mounted) {
                 setState(() {
                   myConnRequestCollection.add({
@@ -234,7 +240,7 @@ class _SearchPageState extends State<SearchPage> {
                 currentUserUpdatedConnRequest: myConnRequestCollection,
               );
             }
-            else if (buttonName == ConnectionStateName.accept.toString()) {
+            else if (buttonName == ConnectionStateName.accept.value) {
               if (mounted) {
                 setState(() {
                   for (var element in myConnRequestCollection) {
@@ -285,8 +291,8 @@ class _SearchPageState extends State<SearchPage> {
         if (connectionStateType == ConnectionStateType.buttonNameWidget) {
           return Text(
             storeStatus == OtherConnectionStatus.requestPending.toString() ?
-            ConnectionStateName.pending.toString().split('.')[1].toString() :
-            ConnectionStateName.accept.toString().split('.')[1].toString(),
+            ConnectionStateName.pending.value :
+            ConnectionStateName.accept.value,
             style: const TextStyle(
               color: Colors.yellow,
             ),
@@ -294,22 +300,22 @@ class _SearchPageState extends State<SearchPage> {
         }
         else if (connectionStateType == ConnectionStateType.buttonOnlyName) {
           return storeStatus == OtherConnectionStatus.requestPending.toString() ?
-          ConnectionStateName.pending.toString() :
-          ConnectionStateName.accept.toString();
+          ConnectionStateName.pending.value :
+          ConnectionStateName.accept.value;
         }
         return Colors.yellow;
       }
       else {
         if (connectionStateType == ConnectionStateType.buttonNameWidget) {
           return Text(
-            ConnectionStateName.connected.toString().split('.')[1].toString(),
+            ConnectionStateName.connected.value,
             style: const TextStyle(
               color: Colors.green,
             ),
           );
         }
         else if (connectionStateType == ConnectionStateType.buttonOnlyName) {
-          return ConnectionStateName.connected.toString();
+          return ConnectionStateName.connected.value;
         }
         return Colors.green;
       }
@@ -317,14 +323,14 @@ class _SearchPageState extends State<SearchPage> {
     else {
       if (connectionStateType == ConnectionStateType.buttonNameWidget) {
         return Text(
-          ConnectionStateName.connect.toString().split('.')[1].toString(),
+          ConnectionStateName.connect.value,
           style: const TextStyle(
             color: Colors.lightBlue,
           ),
         );
       }
       else if (connectionStateType == ConnectionStateType.buttonOnlyName) {
-        return ConnectionStateName.connect.toString();
+        return ConnectionStateName.connect.value;
       }
       return Colors.lightBlue;
     }

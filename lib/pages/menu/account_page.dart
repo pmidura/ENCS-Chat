@@ -8,7 +8,7 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
-  String userAbout = '', userCreationDate = '', userCreationTime = '';
+  String userCreationDate = '', userCreationTime = '';
 
   @override
   void initState() {
@@ -18,34 +18,47 @@ class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
     backgroundColor: const Color(0xFF171717),
-    body: ListView(
+    body: Column(
       children: [
-        // Icon back
-        Padding(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 70),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        Expanded(
+          child: ListView(
             children: [
-              Row(
-                children: [
-                  GestureDetector(
-                    onTap: () => Navigator.of(context).pop(),
-                    child: const Icon(
-                      Icons.arrow_back_ios,
-                      color: Colors.white,
-                      size: 20,
+              // Icon back
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 70),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () => Navigator.of(context).pop(),
+                          child: const Icon(
+                            Icons.arrow_back_ios,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
+
+              // Join date
+              userInfo('Data dołączenia', '03-03-2023'),
+
+              // Join time
+              userInfo('Godzina dołączenia', '12:35 AM'),
             ],
           ),
         ),
 
-        userInfo('About', 'Welcome to ENCS Chat'),
-        userInfo('Join Date', '03-03-2023'),
-        userInfo('Join Time', '12:35 AM'),
-        deleteButton(context),
+        // Delete account btn
+        Padding(
+          padding: const EdgeInsets.only(bottom: 20.0),
+          child: deleteButton(context),
+        ),
       ],
     ),
   );
@@ -109,7 +122,7 @@ class _AccountPageState extends State<AccountPage> {
             ),
             Expanded(
               child: Text(
-                'Delete my account',
+                'Usuń konto',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 16,
@@ -135,7 +148,8 @@ class _AccountPageState extends State<AccountPage> {
         ),
         title: const Center(
           child: Text(
-            'Sure to delete your account?',
+            'Czy na pewno chcesz usunąć swoje konto?',
+            textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.red,
               fontSize: 16,
@@ -149,7 +163,7 @@ class _AccountPageState extends State<AccountPage> {
             children: [
               const Center(
                 child: Text(
-                  'If you delete this account, your entire data will lost forever...\n\nDo you want to continue?',
+                  'Jeśli usuniesz konto, wszystkie dane zostaną utracone na zawsze...\n\nCzy chcesz kontynuować?',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,
@@ -169,7 +183,7 @@ class _AccountPageState extends State<AccountPage> {
                       ),
                     ),
                     child: const Text(
-                      'Cancel',
+                      'Zakończ',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.green,
@@ -188,7 +202,7 @@ class _AccountPageState extends State<AccountPage> {
                       ),
                     ),
                     child: const Text(
-                      'Sure',
+                      'Potwierdź',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.red,
