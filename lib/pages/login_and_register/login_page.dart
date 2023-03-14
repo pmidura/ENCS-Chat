@@ -37,13 +37,13 @@ class _LoginPageState extends State<LoginPage> {
     on FirebaseAuthException catch (ex) {
       // Show error message
       if (ex.code == 'user-not-found') {
-        MyFToast().showMyFToast('Nie znaleziono użytkownika o podanym adresie e-mail!');
+        showMyFToast('Nie znaleziono użytkownika o podanym adresie e-mail!');
       }
       else if (ex.code == 'wrong-password') {
-        MyFToast().showMyFToast('Nieprawidłowe hasło dla użytkownika o podanym adresie e-mail!');
+        showMyFToast('Nieprawidłowe hasło dla użytkownika o podanym adresie e-mail!');
       }
       else {
-        MyFToast().showMyFToast(ex.code);
+        showMyFToast(ex.code);
       }
     }
   }

@@ -64,10 +64,10 @@ class _RegisterPageState extends State<RegisterPage> {
     on FirebaseAuthException catch (ex) {
       // Show error message
       if (ex.code == 'email-already-in-use') {
-        MyFToast().showMyFToast('Podany adres e-mail znajduje się już w bazie!');
+        showMyFToast('Podany adres e-mail znajduje się już w bazie!');
       }
       else {
-        MyFToast().showMyFToast(ex.code);
+        showMyFToast(ex.code);
       }
     }
   }

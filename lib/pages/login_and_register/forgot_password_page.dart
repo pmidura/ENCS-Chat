@@ -30,16 +30,16 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
       if (context.mounted) {
         Navigator.of(context).pop();
-        MyFToast().showMyFToast('Link do resetowania hasła został przesłany na podany adres e-mail.');
+        showMyFToast('Link do resetowania hasła został przesłany na podany adres e-mail.');
       }
     }
     on FirebaseAuthException catch (ex) {
       // Show error message
       if (ex.code == 'user-not-found') {
-        MyFToast().showMyFToast('Nie znaleziono użytkownika o podanym adresie e-mail!');
+        showMyFToast('Nie znaleziono użytkownika o podanym adresie e-mail!');
       }
       else {
-        MyFToast().showMyFToast(ex.code);
+        showMyFToast(ex.code);
       }
     }
   }
