@@ -1,5 +1,5 @@
 import 'package:encs_chat/components/login_and_register/my_button.dart';
-import 'package:encs_chat/components/login_and_register/my_dialog.dart';
+import 'package:encs_chat/components/login_and_register/my_ftoast.dart';
 import 'package:encs_chat/components/login_and_register/my_textfield.dart';
 import 'package:encs_chat/validation/reg_exp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -30,31 +30,16 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
       if (context.mounted) {
         Navigator.of(context).pop();
-        showDialog(
-          context: context,
-          builder: (context) => const MyDialog(
-            text: 'Link do resetowania hasła został przesłany na podany adres e-mail.',
-          ),
-        );
+        MyFToast().showMyFToast('Link do resetowania hasła został przesłany na podany adres e-mail.');
       }
     }
     on FirebaseAuthException catch (ex) {
       // Show error message
       if (ex.code == 'user-not-found') {
-        showDialog(
-          context: context,
-          builder: (context) => const MyDialog(
-            text: 'Nie znaleziono użytkownika o podanym adresie e-mail!',
-          ),
-        );
+        MyFToast().showMyFToast('Nie znaleziono użytkownika o podanym adresie e-mail!');
       }
       else {
-        showDialog(
-          context: context,
-          builder: (context) => MyDialog(
-            text: ex.code,
-          ),
-        );
+        MyFToast().showMyFToast(ex.code);
       }
     }
   }

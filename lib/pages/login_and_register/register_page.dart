@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/login_and_register/my_button.dart';
-import '../../components/login_and_register/my_dialog.dart';
+import '../../components/login_and_register/my_ftoast.dart';
 import '../../components/login_and_register/my_textfield.dart';
 import '../../components/login_and_register/square_tile.dart';
 import '../../firebase/cloud_store_data_management.dart';
@@ -64,16 +64,10 @@ class _RegisterPageState extends State<RegisterPage> {
     on FirebaseAuthException catch (ex) {
       // Show error message
       if (ex.code == 'email-already-in-use') {
-        showDialog(
-          context: context,
-          builder: (context) => const MyDialog(text: 'Podany adres e-mail znajduje się już w bazie!'),
-        );
+        MyFToast().showMyFToast('Podany adres e-mail znajduje się już w bazie!');
       }
       else {
-        showDialog(
-          context: context,
-          builder: (context) => MyDialog(text: ex.code),
-        );
+        MyFToast().showMyFToast(ex.code);
       }
     }
   }

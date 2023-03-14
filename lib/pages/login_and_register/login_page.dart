@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/login_and_register/my_button.dart';
-import '../../components/login_and_register/my_dialog.dart';
+import '../../components/login_and_register/my_ftoast.dart';
 import '../../components/login_and_register/my_textfield.dart';
 import '../../components/login_and_register/square_tile.dart';
 import '../../validation/reg_exp.dart';
@@ -37,28 +37,13 @@ class _LoginPageState extends State<LoginPage> {
     on FirebaseAuthException catch (ex) {
       // Show error message
       if (ex.code == 'user-not-found') {
-        showDialog(
-          context: context,
-          builder: (context) => const MyDialog(
-            text: 'Nie znaleziono użytkownika o podanym adresie e-mail!',
-          ),
-        );
+        MyFToast().showMyFToast('Nie znaleziono użytkownika o podanym adresie e-mail!');
       }
       else if (ex.code == 'wrong-password') {
-        showDialog(
-          context: context,
-          builder: (context) => const MyDialog(
-            text: 'Nieprawidłowe hasło dla użytkownika o podanym adresie e-mail!',
-          ),
-        );
+        MyFToast().showMyFToast('Nieprawidłowe hasło dla użytkownika o podanym adresie e-mail!');
       }
       else {
-        showDialog(
-          context: context,
-          builder: (context) => MyDialog(
-            text: ex.code,
-          ),
-        );
+        MyFToast().showMyFToast(ex.code);
       }
     }
   }
